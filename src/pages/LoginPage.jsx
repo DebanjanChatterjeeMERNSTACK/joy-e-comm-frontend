@@ -31,7 +31,7 @@ export default function LoginPage() {
 
       if ( data.mess === "success") {
         localStorage.setItem("token", data.token);
-         navigate("/admin");
+         navigate("/");
          setIsLoading(false);
           Swal.fire({
             title: data.text,

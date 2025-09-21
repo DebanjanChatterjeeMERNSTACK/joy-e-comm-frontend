@@ -39,7 +39,7 @@ export default function Header({ setSidebarOpen }) {
               DD
             </div>
             <span className="text-sm font-medium text-gray-700 dark:text-gray-200 hidden sm:inline">
-              Debanjan Das
+              Profile
             </span>
             <ChevronDown className={`w-4 h-4 text-gray-500 dark:text-gray-400 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
           </button>
@@ -58,6 +58,12 @@ export default function Header({ setSidebarOpen }) {
                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
               >
                 Settings
+              </a>
+              <a
+                href="#"
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
+              >
+                Sign out
               </a>
             </div>
           )}
