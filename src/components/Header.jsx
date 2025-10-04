@@ -1,7 +1,24 @@
 import { Menu, Bell, Search, ChevronDown, Sun, Moon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Header({ setSidebarOpen }) {
+
+const [userRole, setUserRole] = useState(null);
+
+   useEffect(() => {
+      const token = localStorage.getItem("token");
+  
+      if (token) {
+        try {
+          const decoded = JSON.parse(atob(token.split(".")[1]));
+          setUserRole(decoded.storeName);
+        } catch (err) {
+          console.error("Invalid token", err);
+          setUserRole(null);
+        }
+      }
+    }, []); // <- important: only run once on mount
+  
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   return (
@@ -24,28 +41,28 @@ export default function Header({ setSidebarOpen }) {
         {/* Dark Mode Toggle */}
 
         {/* Notifications */}
-        <button className="p-2 relative rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+        {/* <button className="p-2 relative rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
           <Bell className="w-5 h-5 text-gray-600 dark:text-gray-300" />
           <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-        </button>
+        </button> */}
 
         {/* User Profile */}
         <div className="relative">
           <button
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            className="flex items-center gap-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full p-1 pr-3 transition-colors"
+            className="flex items-center gap-2 bg-gray-300  rounded-full p-2 transition-colors"
           >
-            <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 flex items-center justify-center text-white font-medium text-sm">
+            {/* <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 flex items-center justify-center text-white font-medium text-sm">
               DD
-            </div>
+            </div> */}
             <span className="text-sm font-medium text-gray-700 dark:text-gray-200 hidden sm:inline">
-              Profile
+              {userRole}
             </span>
-            <ChevronDown className={`w-4 h-4 text-gray-500 dark:text-gray-400 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
+           
           </button>
 
           {/* Dropdown Menu */}
-          {isDropdownOpen && (
+          {/* {isDropdownOpen && (
             <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 dark:bg-gray-800 dark:border dark:border-gray-700">
               <a
                 href="#"
@@ -66,7 +83,7 @@ export default function Header({ setSidebarOpen }) {
                 Sign out
               </a>
             </div>
-          )}
+          )} */}
         </div>
       </div>
     </header>

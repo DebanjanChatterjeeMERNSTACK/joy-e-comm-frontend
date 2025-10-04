@@ -1,35 +1,91 @@
-import { Home, Folder, BarChart2, LogOut, PackagePlus } from "lucide-react";
+import {
+  Home,
+  Folder,
+  BarChart2,
+  LogOut,
+  PackagePlus,
+  BaggageClaim,
+  List,
+  UserRoundPlus,
+  PackageSearch,
+  PackageOpen,
+} from "lucide-react";
 import { X } from "lucide-react";
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 // Define all possible navigation items
 const allNavItems = [
-  { label: "Dashboard", icon: <Home size={20} />, href: "/", roles: ["admin", "superadmin"] },
+  { label: "Dashboard", icon: <Home size={20} />, href: "/", roles: ["admin","ceo"] },
+  {
+    label: "Vendor",
+    icon: <UserRoundPlus size={20} />,
+    href: "/vendor",
+    roles: ["admin"],
+  },
+  {
+    label: "Purchase Invoice",
+    icon: <BaggageClaim size={20} />,
+    href: "/purchase_invoice",
+    roles: ["admin"],
+  },
+  {
+    label: "Purchase Invoice List",
+    icon: <List size={20} />,
+    href: "/purchase_invoice_list",
+    roles: ["admin"],
+  },
+  {
+    label: "Product",
+    icon: <PackageSearch size={20} />,
+    href: "/product",
+    roles: ["admin"],
+  },
+  {
+    label: "Sell Invoice",
+    icon: <PackageOpen size={20} />,
+    href: "/sell_invoice",
+    roles: ["admin"],
+  },
+   {
+    label: "Sell Invoice List",
+    icon: <List size={20} />,
+    href: "/sell_invoice_list",
+    roles: ["admin"],
+  },
+   {
+    label: "Customer",
+    icon: <UserRoundPlus size={20} />,
+    href: "/customer",
+    roles: ["admin"],
+  },
+   {
+    label: "Store",
+    icon: <UserRoundPlus size={20} />,
+    href: "/store",
+    roles: ["ceo"],
+  },
 ];
 
-export default function Sidebar({ isOpen, setIsOpen }) {
+export default function Sidebar({ setIsOpen }) {
   const navigate = useNavigate();
   const location = useLocation();
   const [userRole, setUserRole] = useState(null);
 
   // Get user role from localStorage or your authentication system
   useEffect(() => {
-      const token = localStorage.getItem("token");
-  
-      if (token) {
-        try {
-          const decoded = JSON.parse(atob(token.split(".")[1]));
-          setUserRole(decoded.role);
-        } catch (err) {
-          console.error("Invalid token", err);
-          setUserRole(null);
-        }
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      try {
+        const decoded = JSON.parse(atob(token.split(".")[1]));
+        setUserRole(decoded.role);
+      } catch (err) {
+        console.error("Invalid token", err);
+        setUserRole(null);
       }
-      
-    }, []); // <- important: only run once on mount
-  
-    
+    }
+  }, []); // <- important: only run once on mount
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -39,29 +95,31 @@ export default function Sidebar({ isOpen, setIsOpen }) {
   // Filter nav items based on user role
   const getFilteredNavItems = () => {
     if (!userRole) return [];
-    return allNavItems.filter(item => item.roles.includes(userRole));
+    return allNavItems.filter((item) => item.roles.includes(userRole));
   };
 
   // Check if current route matches or starts with the nav item's href
   const isActiveRoute = (href) => {
-    return location.pathname === href || 
-           (href !== "/" && location.pathname.startsWith(href));
+    return (
+      location.pathname === href ||
+      (href !== "/" && location.pathname.startsWith(href))
+    );
   };
 
   return (
-    <div className="h-full bg-gradient-to-b from-indigo-900 to-indigo-800 text-white shadow-2xl">
+    <div className=" h-full bg-gradient-to-b from-indigo-900 to-indigo-800 text-white shadow-2xl">
       {/* Header */}
       <div className="flex items-center justify-between px-6 py-5 border-b border-indigo-700">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center">
+          <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center">
             <span className="text-indigo-800 font-bold text-sm">
-              {userRole === "superadmin" ? "SA" : "A"}
+              {userRole}
             </span>
           </div>
-          <h2 className="text-xl font-bold tracking-tight">MyPanel</h2>
+          <h2 className="text-xl font-bold tracking-tight">Billing</h2>
         </div>
-        <button 
-          onClick={() => setIsOpen(false)} 
+        <button
+          onClick={() => setIsOpen(false)}
           className="lg:hidden p-1 rounded-full hover:bg-indigo-700 transition-colors"
           aria-label="Close sidebar"
         >
@@ -71,29 +129,23 @@ export default function Sidebar({ isOpen, setIsOpen }) {
 
       {/* Navigation */}
       <nav className="p-4 space-y-1">
-        {getFilteredNavItems().map((item) => {
-          const isActive = isActiveRoute(item.href);
-          return (
-            <NavLink
-              key={item.label}
-              to={item.href}
-              className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
+        {getFilteredNavItems().map((item) => (
+          <NavLink
+            key={item.label}
+            to={item.href}
+            className={({ isActive }) =>
+              `flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
                 isActive
                   ? "bg-white/10 text-white font-medium shadow-md"
                   : "text-indigo-100 hover:bg-white/5 hover:text-white"
-              }`}
-              onClick={() => setIsOpen(false)} // Close sidebar on mobile when item is clicked
-            >
-              <span className={isActive ? "text-white" : "text-indigo-300"}>
-                {item.icon}
-              </span>
-              <span>{item.label}</span>
-              {isActive && (
-                <span className="ml-auto w-1.5 h-1.5 bg-white rounded-full" />
-              )}
-            </NavLink>
-          );
-        })}
+              }`
+            }
+            onClick={() => setIsOpen(false)}
+          >
+            <span className="text-indigo-300">{item.icon}</span>
+            <span>{item.label}</span>
+          </NavLink>
+        ))}
       </nav>
 
       {/* Footer */}

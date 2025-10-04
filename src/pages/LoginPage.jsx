@@ -133,7 +133,7 @@ export default function LoginPage() {
             </div>
 
             {/* Remember Me & Forgot Password */}
-            <div className="flex items-center justify-between mb-6">
+            {/* <div className="flex items-center justify-between mb-6">
               <div className="text-sm">
                 <NavLink
                   to={"/forgetpassword"}
@@ -142,7 +142,7 @@ export default function LoginPage() {
                   Forgot password?
                 </NavLink>
               </div>
-            </div>
+            </div> */}
 
             {/* Submit Button */}
             <button
@@ -183,7 +183,7 @@ export default function LoginPage() {
           </form>
 
           {/* Sign Up NavLink */}
-          <div className="mt-6 text-center">
+          {/* <div className="mt-6 text-center">
             <p className="text-sm text-gray-600 dark:text-gray-400">
               Don't have an account?{" "}
               <NavLink
@@ -193,7 +193,7 @@ export default function LoginPage() {
                 Sign up
               </NavLink>
             </p>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

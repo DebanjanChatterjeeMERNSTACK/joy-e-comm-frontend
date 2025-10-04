@@ -12,6 +12,7 @@ const Protected = ({ allowedRoles }) => {
       try {
         const decoded = JSON.parse(atob(token.split(".")[1]));
         setRole(decoded.role);
+        console.log(decoded.role)
       } catch (err) {
         console.error("Invalid token", err);
         setRole(null);
